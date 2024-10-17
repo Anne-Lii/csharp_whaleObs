@@ -1,0 +1,10 @@
+[
+  {
+    "Date": "2024-10-17T00:00:00",
+    "Time": "09:00",
+    "Place": "Utanf\u0000r UlldemarsUdde",
+    "Weather": "Regnigt",
+    "Whale": "Kn\u0000lval",
+    "Number": 1
+  }
+]

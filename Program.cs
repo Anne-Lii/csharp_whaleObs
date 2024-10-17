@@ -11,7 +11,8 @@ namespace whaleObservationApp
 {
     class Program
     {
-        static List<Observation> observationer = new List<Observation>(); //Klassen Observation från Observation.cs filen
+         static ObservationLog observationLog = new ObservationLog(); //Klassen ObservationLog från ObservationLog.cs filen
+
         static void Main(string[] args)
         {
             bool programRunning = true; //variabel med true false 
@@ -31,15 +32,15 @@ namespace whaleObservationApp
                switch (input)
                {
                 case "1":
-                LogObservation();//anropar metod för att logga observation
+                observationLog.LogObservation();//anropar metod för att logga observation
                 break;
 
                 case "2":
-                ShowObservation();//anropar metod för att lista observationer
+                observationLog.ShowObservation();//anropar metod för att lista observationer
                 break;
 
                 case "3":
-                RemoveObservation();//anropar metod för att ta bort observation
+                observationLog.RemoveObservation();//anropar metod för att ta bort observation
                 break;
 
                 case "4":
