@@ -2,17 +2,17 @@ namespace whaleObservationApp
 {
     public class Observation
     {
-        public string Beskrivning {get; set;}
+        public string Obs {get; set;}
         public DateTime Datum {get; set;}
-        public Observation(string beskrivning)
+        public Observation(string obs)
         {
-            Beskrivning = beskrivning;
+            Obs = obs;
             Datum = DateTime.Now; //Datumet för när loggningen skapas
         }
 
         public override string ToString()
         {
-            return $"Observation: {Beskrivning}, Datum: {Datum}";
+            return $"Observation: {Obs}, Datum: {Datum}";
         }
     }
 }

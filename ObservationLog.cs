@@ -6,21 +6,21 @@ namespace whaleObservationApp
     public class ObservationLog
     {
         private List<Observation> observationer = new List<Observation>();
-        
+
         //Metod för att lägga till en observation
         public void LogObservation()
         {
             Console.Clear();//Rensar konsollen
             Console.WriteLine("Beskriv observationen; ");//ber användaren att beskriva observationen
-            string? beskrivning = Console.ReadLine();//input från användaren
-            Observation newObservation = new Observation(beskrivning);
+            string? obs = Console.ReadLine();//input från användaren
+            Observation newObservation = new Observation(obs);
             observationer.Add(newObservation);//lägger till nya observationen till listan
 
             Console.WriteLine("Observation tillagd! ");
             Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
         }
 
-        //Metod för att lägga till en observation
+        //Metod för att visa observationer
         public void ShowObservation()
         {
             Console.Clear();//Rensar konsollen
@@ -28,13 +28,10 @@ namespace whaleObservationApp
             if (observationer.Count == 0)
             {
                 Console.WriteLine("Det finns inga observationer.");
-            } else
+            }
+            else
             {
-                Console.WriteLine("Valobservationer: ");
-                for (int i = 0; i < observationer.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {observationer[i]}");
-                }
+                ShowAllObservation();
             }
 
             Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
@@ -48,28 +45,36 @@ namespace whaleObservationApp
             if (observationer.Count == 0)
             {
                 Console.WriteLine("Det finns inga observationer.");
-            } else
+            }
+            else
             {
-                Console.WriteLine("Valobservationer: ");
-                for (int i = 0; i < observationer.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {observationer[i]}");
-                }
+                ShowAllObservation();
 
                 Console.Write("Ange numret på observationen du vill ta bort:");
 
-                if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <=observationer.Count)
+                if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= observationer.Count)
                 {
                     observationer.RemoveAt(index - 1);
                     Console.WriteLine("Observation borttagen!");
 
-                } else
+                }
+                else
                 {
                     Console.WriteLine("Ogiltigt val, försök igen!");
                 }
             }
 
             Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
+        }
+
+        //Metod för att visa alla observationer
+        public void ShowAllObservation()
+        {
+            Console.WriteLine("Valobservationer: ");
+            for (int i = 0; i < observationer.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {observationer[i]}");
+            }
         }
     }
 }
