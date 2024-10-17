@@ -27,26 +27,49 @@ namespace whaleObservationApp
             Console.WriteLine("Datum för observationen (ÅÅÅÅ-MM-DD): ");
             DateTime date;
 
+            //kontrollerar att datum är rätt inmatat med TryParse
             while (!DateTime.TryParse(Console.ReadLine(), out date))
             {
-                Console.WriteLine("Ogiltigt datumformat, försök igen (format: åååå-mm-dd).");
+                Console.WriteLine("Ogiltigt datum eller datumformat, försök igen (format: åååå-mm-dd).");
             }
 
-            //ber användaren skriva in tid
+            //ber användaren skriva in tid och kontrollerar formatet
             Console.Write("Ange tidpunkt för observationen (t.ex. 10:30): ");
-            string? time = Console.ReadLine();
+            string? time;
+            TimeSpan validTime;
+            while (!TimeSpan.TryParseExact(Console.ReadLine(), @"hh\:mm", null, out validTime))
+            {
+                Console.WriteLine("Ogiltigt tidsformat, försök igen (format: tt:mm).");
+                Console.Write("Ange tidpunkt för observationen (t.ex. 10:30): ");
+            }
+            time = validTime.ToString(@"hh\:mm"); // Formaterar tiden till rätt format
 
-            //ber användaren att skriva in plats
+
+            //ber användaren att skriva in plats plus felmeddelande vid tom inmatning
             Console.Write("Ange plats för observationen (t.ex. Kusten, Havet): ");
-            string? place = Console.ReadLine();
+            string? place;
+            do
+            {
+                place = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(place))
+                {
+                    Console.WriteLine("Du måste fylla i en plats, försök igen.");
+                }
+            } while (string.IsNullOrWhiteSpace(place));
 
-            //ber användaren att skriva in väder
-            Console.Write("Ange väder vid observationen (t.ex. Soligt, Molnigt, Regnigt): ");
-            string? weather = Console.ReadLine();
 
-            //ber användaren att skriva in valart
-            Console.Write("Ange typ av val som observerades (t.ex. Blåval, Kaskelot, Knölval): ");
-            string? whale = Console.ReadLine();
+            //ber användaren att skriva in valart plus felmeddelande vid tom inmatning
+            Console.Write("Ange valart (t.ex. Kaskelot, Grönlandsval): ");
+            string? whale;
+            do
+            {
+                whale = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(whale))
+                {
+                    Console.WriteLine("Du måste fylla i valart, försök igen.");
+                }
+            } while (string.IsNullOrWhiteSpace(whale));
+
 
             //ber användaren att skriva in antal valar
             Console.Write("Ange hur många valar som observerades: ");
@@ -58,11 +81,12 @@ namespace whaleObservationApp
                 Console.Write("Ange hur många valar som observerades: ");
             }
 
-            Observation newObservation = new Observation(date, time, place, weather, whale, number);
+            Observation newObservation = new Observation(date, time, place, whale, number);
             observationer.Add(newObservation);//lägger till nya observationen till listan
 
             Console.WriteLine("Observation tillagd! ");
             SaveObservationsToFile(); //sparar till JSON-filen
+            Console.WriteLine("Tryck på valfri tangent för att återvända till menyn");
             Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
         }
 
@@ -81,6 +105,7 @@ namespace whaleObservationApp
                 ShowAllObservation();
             }
 
+            Console.WriteLine("Tryck på valfri tangent för att återvända till menyn");
             Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
         }
 
@@ -98,7 +123,7 @@ namespace whaleObservationApp
             {
                 ShowAllObservation();
 
-                Console.Write("Ange numret på observationen du vill ta bort:");
+                Console.Write("ObservationsID du vill ta bort:");
 
                 if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= observationer.Count)
                 {
@@ -113,6 +138,7 @@ namespace whaleObservationApp
                 }
             }
 
+            Console.WriteLine("Tryck på valfri tangent för att återvända till menyn");
             Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
         }
 
@@ -121,9 +147,15 @@ namespace whaleObservationApp
         public void ShowAllObservation()
         {
             Console.WriteLine("Valobservationer: ");
+            Console.WriteLine();// tom rad för extra mellanrum
             for (int i = 0; i < observationer.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {observationer[i]}");
+                Console.WriteLine($"ObservationsID: {i + 1}");
+                Console.WriteLine($"Datum och tid: {observationer[i].Date.ToShortDateString()} {observationer[i].Time}");
+                Console.WriteLine($"Plats: {observationer[i].Place}");
+                Console.WriteLine($"Valart: {observationer[i].Whale}");
+                Console.WriteLine($"Antal individer: {observationer[i].Number}");
+                Console.WriteLine(); // Tom rad för att separera varje observation
             }
         }
 

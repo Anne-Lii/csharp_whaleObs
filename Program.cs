@@ -21,13 +21,21 @@ namespace whaleObservationApp
             {
                 Console.Clear();//Rensar konsollen vid varje menyval
                 Console.WriteLine("Välkommen till appen för valobservationer!");
-                Console.WriteLine("Välj ett alternativ (1-4)");
+                Console.WriteLine("Välj ett alternativ (1-4) tryck sedan ENTER");
+                    Console.WriteLine("");//tom för mellanrum
                 Console.WriteLine("1. Logga en valobservation");
                 Console.WriteLine("2. Visa alla valobservationer");
                 Console.WriteLine("3. Ta bort valobservation");
                 Console.WriteLine("4. Avsluta");
 
                 string? input = Console.ReadLine();
+
+                 if (string.IsNullOrWhiteSpace(input)) // Kontrollera om inmatningen är tom eller endast innehåller blanksteg
+                {
+                    Console.WriteLine("Inmatningen kan inte vara tom, försök igen.");
+                    Console.ReadKey();
+                    continue; // Gå tillbaka till början av loopen utan att bearbeta input
+                }
 
                switch (input)
                {
