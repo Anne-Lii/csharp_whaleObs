@@ -31,7 +31,7 @@ namespace whaleObservationApp
                switch (input)
                {
                 case "1":
-                LoggObservation();//anropar metod för att logga observation
+                LogObservation();//anropar metod för att logga observation
                 break;
 
                 case "2":
