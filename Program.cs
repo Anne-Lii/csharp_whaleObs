@@ -5,12 +5,13 @@ En app för valobservationer där användaren kan registrera en observation av e
 
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace whaleObservationApp
 {
     class Program
     {
-        static List<> observationer = new List<>();
+        static List<Observation> observationer = new List<Observation>(); //Klassen Observation från Observation.cs filen
         static void Main(string[] args)
         {
             bool programRunning = true; //variabel med true false 
@@ -51,6 +52,8 @@ namespace whaleObservationApp
                 break;
                }
             }
+
+            Console.WriteLine("Programmet avslutas...");//meddelar att programmet avslutas
         }
     }
 }
