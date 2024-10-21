@@ -2,7 +2,6 @@
 Anne-Lii Hansen anha2324@student.miun.se
 En app för valobservationer där användaren kan registrera en observation av en val.
 */
-
 namespace whaleObservationApp
 {
     public class Observation

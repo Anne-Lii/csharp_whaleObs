@@ -1,9 +1,30 @@
 [
   {
-    "Date": "2019-07-16T00:00:00",
-    "Time": "12:01",
-    "Place": "västervik",
-    "Whale": "kaskelot",
+    "Date": "2012-07-19T00:00:00",
+    "Time": "15:15",
+    "Place": "58,969128, 4,455466",
+    "Whale": "grönlandsval",
+    "Number": 1
+  },
+  {
+    "Date": "2020-07-04T00:00:00",
+    "Time": "13:17",
+    "Place": "58,690856, 4,864716",
+    "Whale": "grönlandsval",
+    "Number": 1
+  },
+  {
+    "Date": "2017-07-15T00:00:00",
+    "Time": "12:34",
+    "Place": "60,035274, 4,424172",
+    "Whale": "grönlandsval",
+    "Number": 1
+  },
+  {
+    "Date": "2023-07-12T00:00:00",
+    "Time": "12:12",
+    "Place": "59,682215, 4,896929",
+    "Whale": "grönlandsval",
     "Number": 1
   }
 ]

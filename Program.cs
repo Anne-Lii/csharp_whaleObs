@@ -6,6 +6,7 @@ En app för valobservationer där användaren kan registrera en observation av e
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;// För att kunna använda List
+
 namespace whaleObservationApp
 {
     class Program
@@ -27,14 +28,19 @@ namespace whaleObservationApp
                 Console.WriteLine("3. Ta bort valobservation");
                 Console.WriteLine("4. Avsluta");
 
-                string? input = Console.ReadLine();//inmatning från användaren
+                string? input;
 
-                if (string.IsNullOrWhiteSpace(input)) // Kontrollera om inmatningen är tom eller endast innehåller blanksteg
+                // Loopa tills användaren matar in en giltig inmatning
+                do
                 {
-                    Console.WriteLine("Inmatningen kan inte vara tom, försök igen.");
-                    Console.ReadKey();
-                    continue; // Gå tillbaka till början av loopen utan att bearbeta input
-                }
+                    input = Console.ReadLine(); // Inmatning från användaren
+
+                    if (string.IsNullOrWhiteSpace(input))
+                    {
+                        Console.WriteLine("Inmatningen kan inte vara tom, försök igen.");
+                    }
+
+                } while (string.IsNullOrWhiteSpace(input)); // Fortsätt att fråga tills inmatning inte är tom
 
                 switch (input)
                 {
@@ -51,6 +57,10 @@ namespace whaleObservationApp
                         break;
 
                     case "4":
+                        Console.Clear(); // rensar konsollen
+                        Console.WriteLine("Är du säker på att du vill stänga av?");
+                        Console.WriteLine("Tryck på valfri tangent för att stänga av");
+                        Console.ReadKey(); // Vänta på att användaren trycker på en tangent innan programmet avslutas
                         programRunning = false; // Avslutar programmet
                         break;
 
