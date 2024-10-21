@@ -1,3 +1,8 @@
+/*
+Anne-Lii Hansen anha2324@student.miun.se
+En app för valobservationer där användaren kan registrera en observation av en val.
+*/
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,44 +13,32 @@ namespace whaleObservationApp
     public class ObservationLog
     {
         private List<Observation> observationer = new List<Observation>();
-
         private readonly string filePath = "data.txt";
 
-        public ObservationLog()
-        {
-            //laddar in observationer från fil vid start
-            LoadObservationsFromFile();
-        }
-
-
-        //Metod för att lägga till en observation
+        // Metod för att lägga till en observation
         public void LogObservation()
         {
-            Console.Clear();//Rensar konsollen
+            Console.Clear();
 
-            //ber användaren att skriva in datum för observationen
+            // Datum för observationen
             Console.WriteLine("Datum för observationen (ÅÅÅÅ-MM-DD): ");
             DateTime date;
-
-            //kontrollerar att datum är rätt inmatat med TryParse
             while (!DateTime.TryParse(Console.ReadLine(), out date))
             {
                 Console.WriteLine("Ogiltigt datum eller datumformat, försök igen (format: åååå-mm-dd).");
             }
 
-            //ber användaren skriva in tid och kontrollerar formatet
+            // Tidpunkt för observationen
             Console.Write("Ange tidpunkt för observationen (t.ex. 10:30): ");
             string? time;
             TimeSpan validTime;
             while (!TimeSpan.TryParseExact(Console.ReadLine(), @"hh\:mm", null, out validTime))
             {
                 Console.WriteLine("Ogiltigt tidsformat, försök igen (format: tt:mm).");
-                Console.Write("Ange tidpunkt för observationen (t.ex. 10:30): ");
             }
-            time = validTime.ToString(@"hh\:mm"); // Formaterar tiden till rätt format
+            time = validTime.ToString(@"hh\:mm");
 
-
-            //ber användaren att skriva in plats plus felmeddelande vid tom inmatning
+            // Plats för observationen
             Console.Write("Ange plats för observationen (t.ex. Kusten, Havet): ");
             string? place;
             do
@@ -57,8 +50,7 @@ namespace whaleObservationApp
                 }
             } while (string.IsNullOrWhiteSpace(place));
 
-
-            //ber användaren att skriva in valart plus felmeddelande vid tom inmatning
+            // Valart
             Console.Write("Ange valart (t.ex. Kaskelot, Grönlandsval): ");
             string? whale;
             do
@@ -70,50 +62,56 @@ namespace whaleObservationApp
                 }
             } while (string.IsNullOrWhiteSpace(whale));
 
-
-            //ber användaren att skriva in antal valar
+            // Antal valar
             Console.Write("Ange hur många valar som observerades: ");
             int number;
-
             while (!int.TryParse(Console.ReadLine(), out number) || number <= 0)
             {
                 Console.WriteLine("Ogiltigt antal, försök igen.");
-                Console.Write("Ange hur många valar som observerades: ");
             }
 
+            // Skapa ny observation
             Observation newObservation = new Observation(date, time, place, whale, number);
-            observationer.Add(newObservation);//lägger till nya observationen till listan
-
-            Console.WriteLine("Observation tillagd! ");
-            SaveObservationsToFile(); //sparar till JSON-filen
+            observationer.Add(newObservation);
+        
+            Console.WriteLine("Observation tillagd!");
+            SaveObservationsToFile();
             Console.WriteLine("Tryck på valfri tangent för att återvända till menyn");
-            Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
+            Console.ReadKey();
         }
 
-
-        //Metod för att visa observationer
-        public void ShowObservation()
+        // Metod för att visa alla observationer
+        public void ShowAllObservation()
         {
-            Console.Clear();//Rensar konsollen
-
+            
+            // Inläsning av observationer vid start
+            LoadObservationsFromFile();
+        
+            Console.Clear();
             if (observationer.Count == 0)
             {
                 Console.WriteLine("Det finns inga observationer.");
             }
             else
             {
-                ShowAllObservation();
+                Console.WriteLine("Valobservationer:");
+                for (int i = 0; i < observationer.Count; i++)
+                {
+                    Console.WriteLine($"ObservationsID: {i + 1}");
+                    Console.WriteLine($"Datum och tid: {observationer[i].Date.ToShortDateString()} {observationer[i].Time}");
+                    Console.WriteLine($"Plats: {observationer[i].Place}");
+                    Console.WriteLine($"Valart: {observationer[i].Whale}");
+                    Console.WriteLine($"Antal individer: {observationer[i].Number}");
+                    Console.WriteLine(); // Tom rad för att separera varje observation
+                }
             }
-
-            Console.WriteLine("Tryck på valfri tangent för att återvända till menyn");
-            Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
+            Console.WriteLine("Tryck på valfri tangent för att återvända till menyn.");
+            Console.ReadKey();
         }
 
-
-        //Metod för att ta bort en observation
         public void RemoveObservation()
         {
-            Console.Clear();//Rensar konsollen
+            Console.Clear(); // Rensar konsollen
 
             if (observationer.Count == 0)
             {
@@ -121,46 +119,40 @@ namespace whaleObservationApp
             }
             else
             {
-                ShowAllObservation();
+                for (int i = 0; i < observationer.Count; i++)
+                {
+                    Console.Write($"ObservationsID: {i + 1} - {observationer[i].Whale}, {observationer[i].Place}");
+                }
 
-                Console.Write("ObservationsID du vill ta bort:");
+                Console.Write("Ange ID för den observation du vill ta bort:");
 
                 if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= observationer.Count)
                 {
-                    observationer.RemoveAt(index - 1);
+                    observationer.RemoveAt(index - 1); // Tar bort observationen med det valda ID:et
+                    
+                    if (observationer.Count == 0)
+                    {
+                        Console.WriteLine("Alla observationer har raderats.");
+                        File.WriteAllText(filePath, "[]"); // Rensa filen genom att skriva en tom JSON-lista
+                    } else
+                    {
+                         SaveObservationsToFile(); // Sparar listan till fil efter att en observation har tagits bort
+                    }
+                    
                     Console.WriteLine("Observation borttagen!");
-                    SaveObservationsToFile(); //sparar till JSON-filen
-
                 }
                 else
                 {
-                    Console.WriteLine("Ogiltigt val, försök igen!");
+                    Console.WriteLine("Ogiltigt ID, försök igen!");
                 }
             }
 
             Console.WriteLine("Tryck på valfri tangent för att återvända till menyn");
-            Console.ReadKey();//väntar på att användaren trycker på en tangent för att återgå till meny
+            Console.ReadKey(); // Väntar på att användaren trycker på en tangent för att återgå till menyn
         }
 
 
-        //Metod för att visa alla observationer
-        public void ShowAllObservation()
-        {
-            Console.WriteLine("Valobservationer: ");
-            Console.WriteLine();// tom rad för extra mellanrum
-            for (int i = 0; i < observationer.Count; i++)
-            {
-                Console.WriteLine($"ObservationsID: {i + 1}");
-                Console.WriteLine($"Datum och tid: {observationer[i].Date.ToShortDateString()} {observationer[i].Time}");
-                Console.WriteLine($"Plats: {observationer[i].Place}");
-                Console.WriteLine($"Valart: {observationer[i].Whale}");
-                Console.WriteLine($"Antal individer: {observationer[i].Number}");
-                Console.WriteLine(); // Tom rad för att separera varje observation
-            }
-        }
-
-
-        //Metod för att spara observationer till JSON-fil
+        // Metod för att spara observationer till JSON-fil
         private void SaveObservationsToFile()
         {
             try
@@ -170,32 +162,29 @@ namespace whaleObservationApp
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine($" Fel vid sparande av data: {ex.Message}");
+                Console.WriteLine($"Fel vid sparande av data: {ex.Message}");
             }
         }
 
-
-        //Metod för att läsa in observationer från JSON-filen
-        private void LoadObservationsFromFile()
+        // Metod för att läsa in observationer från JSON-filen
+        public void LoadObservationsFromFile()
         {
             try
             {
                 if (File.Exists(filePath))
                 {
+                    observationer.Clear();//Rensar listan innan ny inläsning
                     string jsonData = File.ReadAllText(filePath);
                     observationer = JsonConvert.DeserializeObject<List<Observation>>(jsonData) ?? new List<Observation>();
                 }
                 else
                 {
-                    //skapar en ny tom JSON-fil med en tom lista
                     File.WriteAllText(filePath, "[]");
                 }
-
-
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine($" Fel vid inläsning av data: {ex.Message}");
+                Console.WriteLine($"Fel vid inläsning av data: {ex.Message}");
             }
         }
     }

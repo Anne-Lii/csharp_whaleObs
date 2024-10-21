@@ -1,23 +1,9 @@
 [
   {
-    "Date": "2024-10-17T00:00:00",
-    "Time": "09:00",
-    "Place": "Utanf\u0000r UlldemarsUdde",
-    "Whale": "Kn\u0000lval",
-    "Number": 1
-  },
-  {
-    "Date": "2024-01-01T00:00:00",
-    "Time": "00:00",
-    "Place": "utanf\u0000r v\u0000stervik",
-    "Whale": "kaskelot",
-    "Number": 2
-  },
-  {
-    "Date": "2020-01-01T00:00:00",
-    "Time": "10:30",
-    "Place": "HAVET",
-    "Whale": "kaskelot",
-    "Number": 2
+    "Date": "2018-07-16T00:00:00",
+    "Time": "13:51",
+    "Place": "Grönland",
+    "Whale": "Narval",
+    "Number": 26
   }
 ]
