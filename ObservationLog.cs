@@ -27,6 +27,8 @@ namespace whaleObservationApp
             {
                 Console.WriteLine("Ogiltigt datum eller datumformat, försök igen (format: åååå-mm-dd).");
             }
+            // Hämta månaden från datumet
+            int month = date.Month;
 
             // Tidpunkt för observationen
             Console.Write("Ange tidpunkt för observationen (t.ex. 10:30): ");
@@ -83,11 +85,11 @@ namespace whaleObservationApp
         // Metod för att visa alla observationer
         public void ShowAllObservation()
         {
-
+Console.Clear();
             // Inläsning av observationer vid start
             LoadObservationsFromFile();
 
-            Console.Clear();
+            
             if (observationer.Count == 0)
             {
                 Console.WriteLine("Det finns inga observationer.");
@@ -199,6 +201,51 @@ namespace whaleObservationApp
             {
                 Console.WriteLine($"Fel vid inläsning av data: {ex.Message}");
             }
+        }
+
+        // Laddar data från filen data.txt och konverterar till WhaleData-lista
+        public List<WhaleData> LoadDataFromFile()
+        {
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException($"File not found: {filePath}");
+            }
+
+            string jsonData = File.ReadAllText(filePath);
+            var observations = JsonConvert.DeserializeObject<List<Observation>>(jsonData);
+
+            var whaleDataList = new List<WhaleData>();
+
+            if (observations != null) // Null-kontroll
+            {
+                foreach (var obs in observations)
+                {
+                    // Konvertera datumet till månad (TimeOfYear)
+                    int month = obs.Date.Month;
+
+                    // Skapa ett WhaleData-objekt och lägg till i listan
+                    whaleDataList.Add(new WhaleData
+                    {
+                        WhaleType = obs.Whale,
+                        Place = obs.Place,
+                        TimeOfYear = month // Månad från datumet
+                    });
+                }
+            }
+            else
+            {
+                Console.WriteLine("Inga observationer kunde läsas från filen.");
+            }
+
+            return whaleDataList;
+        }
+
+
+        public void TrainModelFromFile()
+        {
+            var whaleData = LoadDataFromFile();
+            var whalePredictionModel = new WhalePredictionModel();
+            whalePredictionModel.TrainModel(whaleData);
         }
     }
 }
