@@ -73,7 +73,7 @@ namespace whaleObservationApp
             // Skapa ny observation
             Observation newObservation = new Observation(date, time, place, whale, number);
             observationer.Add(newObservation);
-        
+
             Console.WriteLine("Observation tillagd!");
             SaveObservationsToFile();
             Console.WriteLine("Tryck på valfri tangent för att återvända till menyn");
@@ -83,10 +83,10 @@ namespace whaleObservationApp
         // Metod för att visa alla observationer
         public void ShowAllObservation()
         {
-            
+
             // Inläsning av observationer vid start
             LoadObservationsFromFile();
-        
+
             Console.Clear();
             if (observationer.Count == 0)
             {
@@ -95,6 +95,7 @@ namespace whaleObservationApp
             else
             {
                 Console.WriteLine("Valobservationer:");
+                Console.WriteLine("");//tom rad
                 for (int i = 0; i < observationer.Count; i++)
                 {
                     Console.WriteLine($"ObservationsID: {i + 1}");
@@ -121,24 +122,36 @@ namespace whaleObservationApp
             {
                 for (int i = 0; i < observationer.Count; i++)
                 {
-                    Console.Write($"ObservationsID: {i + 1} - {observationer[i].Whale}, {observationer[i].Place}");
+                    Console.WriteLine($"ObservationsID: {i + 1} - {observationer[i].Whale}, {observationer[i].Place}");
                 }
 
-                Console.Write("Ange ID för den observation du vill ta bort:");
+                Console.WriteLine("");
+                Console.Write("Ange ID för den observation du vill ta bort :");
+                Console.WriteLine("Eller tryck ENTER för att komma tillbaka till menyn");
 
-                if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= observationer.Count)
+                string? input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Ingen observation har tagits bort. Tryck ENTER för att återgå till menyn.");
+                    Console.ReadKey(); // Väntar på att användaren trycker på en tangent för att återgå till menyn
+                    return;
+                }
+
+                if (int.TryParse(input, out int index) && index > 0 && index <= observationer.Count)
                 {
                     observationer.RemoveAt(index - 1); // Tar bort observationen med det valda ID:et
-                    
+
                     if (observationer.Count == 0)
                     {
                         Console.WriteLine("Alla observationer har raderats.");
                         File.WriteAllText(filePath, "[]"); // Rensa filen genom att skriva en tom JSON-lista
-                    } else
-                    {
-                         SaveObservationsToFile(); // Sparar listan till fil efter att en observation har tagits bort
                     }
-                    
+                    else
+                    {
+                        SaveObservationsToFile(); // Sparar listan till fil efter att en observation har tagits bort
+                    }
+
                     Console.WriteLine("Observation borttagen!");
                 }
                 else

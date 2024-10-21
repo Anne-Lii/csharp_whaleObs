@@ -1,9 +1,9 @@
 [
   {
-    "Date": "2018-07-16T00:00:00",
-    "Time": "13:51",
-    "Place": "Grönland",
-    "Whale": "Narval",
-    "Number": 26
+    "Date": "2019-07-16T00:00:00",
+    "Time": "12:01",
+    "Place": "västervik",
+    "Whale": "kaskelot",
+    "Number": 1
   }
 ]
